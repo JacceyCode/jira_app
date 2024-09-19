@@ -39,7 +39,7 @@ const Sidebar = () => {
   const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl trasition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white ${isSidebarCollapsed ? "w-0 hidden" : "w-64"}`;
 
   return (
-    <aside className={sidebarClassNames}>
+    <aside className={`${sidebarClassNames}`}>
       <section className="felx h-[100%] w-full flex-col justify-start">
         {/* TOP LOGO */}
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-white px-6 pt-3 dark:bg-black">
@@ -54,7 +54,7 @@ const Sidebar = () => {
               }
             >
               {
-                <X className="textgray800 size-6 hover:text-gray-500 dark:text-white" />
+                <X className="size-6 text-gray-800 hover:text-gray-500 dark:text-white" />
               }
             </button>
           )}
