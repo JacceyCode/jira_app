@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import StoreProvider, { useAppSelector } from "./redux";
+import AuthProvider from "./authProvider";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const isSidebarCollapsed = useAppSelector(
@@ -24,7 +25,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       {/* sidebar */}
       <Sidebar />
       <main
-        className={`dark:bg-dark-bg flex w-full flex-col bg-gray-50 ${isSidebarCollapsed ? "" : "md:pl-64"}`}
+        className={`flex w-full flex-col bg-gray-50 dark:bg-dark-bg ${isSidebarCollapsed ? "" : "md:pl-64"}`}
       >
         {/* navbar */}
         <Navbar />
@@ -37,7 +38,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 const DashboardWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <StoreProvider>
-      <DashboardLayout>{children}</DashboardLayout>
+      <AuthProvider>
+        <DashboardLayout>{children}</DashboardLayout>
+      </AuthProvider>
     </StoreProvider>
   );
 };
