@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
       <div className="flex h-full w-full items-center justify-center">
         <div className="size-9">
           <Image
-            src={`/${params.value}`}
+            src={`https://jira-s3-images.s3.amazonaws.com/${params.value}`}
             alt={params.row.username}
             width={100}
             height={50}

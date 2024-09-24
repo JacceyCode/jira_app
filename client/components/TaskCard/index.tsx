@@ -8,14 +8,14 @@ type Props = {
 
 const TaskCard = ({ task }: Props) => {
   return (
-    <div className="dark:bg-dark-secondary mb-3 rounded bg-white p-4 shadow dark:text-white">
+    <div className="mb-3 rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white">
       {task.attachments && task.attachments.length > 0 && (
         <div>
           <strong>Attachment:</strong>
           <div className="flex flex-wrap">
             {task.attachments && task.attachments.length > 0 && (
               <Image
-                src={`/${task.attachments[0].fileURL}`}
+                src={`https://jira-s3-images.s3.amazonaws.com/${task.attachments[0].fileURL}`}
                 alt={task.attachments[0].fileName}
                 width={400}
                 height={200}
