@@ -49,16 +49,16 @@ const Sidebar = () => {
   if (!currentUser) return null;
   const currentUserDetails = currentUser?.userDetails;
 
-  const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl trasition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white ${isSidebarCollapsed ? "w-0 hidden" : "w-64"}`;
+  const sidebarClassNames = `fixed flex flex-col justify-between shadow-xl trasition-all duration-300 h-screen z-40 dark:bg-black bg-white ${isSidebarCollapsed ? "w-0 hidden" : "w-64"}`;
 
   return (
     <aside className={`${sidebarClassNames}`}>
-      <section className="flex h-[100%] w-full flex-col justify-start">
+      <section className="flex h-[93%] w-full flex-col justify-start md:h-full">
         {/* TOP LOGO */}
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-white px-6 pt-3 dark:bg-black">
-          <div className="text-xl font-bold text-gray-800 dark:text-white">
+          <h1 className="text-xl font-bold text-gray-800 dark:text-white">
             JAFEL
-          </div>
+          </h1>
           {!isSidebarCollapsed && (
             <button
               className="py-3"
@@ -92,79 +92,85 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* NAVBAR LINKS */}
-        <nav className="z-10 w-full">
-          <SidebarLink icon={Home} label="Home" href="/" />
-          <SidebarLink icon={Briefcase} label="Timeline" href="/timeline" />
-          <SidebarLink icon={Search} label="Search" href="/search" />
-          <SidebarLink icon={Settings} label="Settings" href="/settings" />
-          <SidebarLink icon={User} label="Users" href="/users" />
-          <SidebarLink icon={Users} label="Teams" href="/teams" />
-        </nav>
+        <section className="overflow-y-auto">
+          {/* NAVBAR LINKS */}
+          <nav className="z-10 w-full">
+            <SidebarLink icon={Home} label="Home" href="/" />
+            <SidebarLink icon={Briefcase} label="Timeline" href="/timeline" />
+            <SidebarLink icon={Search} label="Search" href="/search" />
+            <SidebarLink icon={Settings} label="Settings" href="/settings" />
+            <SidebarLink icon={User} label="Users" href="/users" />
+            <SidebarLink icon={Users} label="Teams" href="/teams" />
+          </nav>
 
-        {/* PROJECTS LINKS*/}
-        <button
-          onClick={() => setShowProjects((prev) => !prev)}
-          className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
-        >
-          <span className="">Projects</span>
-          {showProjects ? (
-            <ChevronUp className="size-5" />
-          ) : (
-            <ChevronDown className="size-5" />
-          )}
-        </button>
-        {/* PROJECT LISTS */}
-        {showProjects &&
-          projects?.map((project) => (
-            <SidebarLink
-              key={project.id}
-              icon={Briefcase}
-              label={project.name}
-              href={`/projects/${project.id}`}
-            />
-          ))}
+          {/* PROJECTS LINKS*/}
+          <button
+            onClick={() => setShowProjects((prev) => !prev)}
+            className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
+          >
+            <span className="">Projects</span>
+            {showProjects ? (
+              <ChevronUp className="size-5" />
+            ) : (
+              <ChevronDown className="size-5" />
+            )}
+          </button>
+          {/* PROJECT LISTS */}
+          {showProjects &&
+            projects?.map((project) => (
+              <SidebarLink
+                key={project.id}
+                icon={Briefcase}
+                label={project.name}
+                href={`/projects/${project.id}`}
+              />
+            ))}
 
-        {/* PRIORITY LINKS */}
-        <button
-          onClick={() => setShowPriority((prev) => !prev)}
-          className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
-        >
-          <span className="">Priority</span>
-          {showPriority ? (
-            <ChevronUp className="size-5" />
-          ) : (
-            <ChevronDown className="size-5" />
+          {/* PRIORITY LINKS */}
+          <button
+            onClick={() => setShowPriority((prev) => !prev)}
+            className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
+          >
+            <span className="">Priority</span>
+            {showPriority ? (
+              <ChevronUp className="size-5" />
+            ) : (
+              <ChevronDown className="size-5" />
+            )}
+          </button>
+          {showPriority && (
+            <>
+              <SidebarLink
+                icon={AlertCircle}
+                label="Urgent"
+                href="/priority/urgent"
+              />
+              <SidebarLink
+                icon={ShieldAlert}
+                label="High"
+                href="/priority/high"
+              />
+              <SidebarLink
+                icon={AlertTriangle}
+                label="Medium"
+                href="/priority/medium"
+              />
+              <SidebarLink
+                icon={AlertOctagon}
+                label="Low"
+                href="/priority/low"
+              />
+              <SidebarLink
+                icon={Layers3}
+                label="Backlog"
+                href="/priority/backlog"
+              />
+            </>
           )}
-        </button>
-        {showPriority && (
-          <>
-            <SidebarLink
-              icon={AlertCircle}
-              label="Urgent"
-              href="/priority/urgent"
-            />
-            <SidebarLink
-              icon={ShieldAlert}
-              label="High"
-              href="/priority/high"
-            />
-            <SidebarLink
-              icon={AlertTriangle}
-              label="Medium"
-              href="/priority/medium"
-            />
-            <SidebarLink icon={AlertOctagon} label="Low" href="/priority/low" />
-            <SidebarLink
-              icon={Layers3}
-              label="Backlog"
-              href="/priority/backlog"
-            />
-          </>
-        )}
+        </section>
       </section>
 
-      <section className="z-10 mt-32 flex w-full flex-col items-center gap-4 bg-white px-8 py-4 dark:bg-black md:hidden">
+      <section className="z-10 flex h-16 w-full flex-col items-center gap-4 bg-white px-8 py-4 dark:bg-black md:hidden">
         <section className="flex w-full items-center">
           <div className="align-center flex size-9 justify-center">
             {!!currentUserDetails?.profilePictureUrl ? (
@@ -201,12 +207,20 @@ interface SidebarLinkProps {
 }
 
 const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
+  const dispatch = useAppDispatch();
+  const isSidebarCollapsed = useAppSelector(
+    (state) => state.global.isSidebarCollapsed,
+  );
   const pathname = usePathname();
   const isActive =
     pathname === href || (pathname === "/" && href === "/dashboard");
 
   return (
-    <Link href={href} className="w-full">
+    <Link
+      href={href}
+      className="w-full"
+      onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
+    >
       <div
         className={`relative flex cursor-pointer items-center gap-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""} justify-start px-8 py-3`}
       >
