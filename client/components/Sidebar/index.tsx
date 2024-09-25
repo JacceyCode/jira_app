@@ -25,11 +25,28 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Function to check if the screen size is mobile
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768); // You can change 768px based on your mobile breakpoint
+    };
+
+    // Check the screen size initially
+    checkIsMobile();
+
+    // Add resize event listener to track screen size changes
+    window.addEventListener("resize", checkIsMobile);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
@@ -95,12 +112,42 @@ const Sidebar = () => {
         <section className="overflow-y-auto">
           {/* NAVBAR LINKS */}
           <nav className="z-10 w-full">
-            <SidebarLink icon={Home} label="Home" href="/" />
-            <SidebarLink icon={Briefcase} label="Timeline" href="/timeline" />
-            <SidebarLink icon={Search} label="Search" href="/search" />
-            <SidebarLink icon={Settings} label="Settings" href="/settings" />
-            <SidebarLink icon={User} label="Users" href="/users" />
-            <SidebarLink icon={Users} label="Teams" href="/teams" />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={Home}
+              label="Home"
+              href="/"
+            />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={Briefcase}
+              label="Timeline"
+              href="/timeline"
+            />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={Search}
+              label="Search"
+              href="/search"
+            />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={Settings}
+              label="Settings"
+              href="/settings"
+            />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={User}
+              label="Users"
+              href="/users"
+            />
+            <SidebarLink
+              isMobile={isMobile}
+              icon={Users}
+              label="Teams"
+              href="/teams"
+            />
           </nav>
 
           {/* PROJECTS LINKS*/}
@@ -119,6 +166,7 @@ const Sidebar = () => {
           {showProjects &&
             projects?.map((project) => (
               <SidebarLink
+                isMobile={isMobile}
                 key={project.id}
                 icon={Briefcase}
                 label={project.name}
@@ -141,26 +189,31 @@ const Sidebar = () => {
           {showPriority && (
             <>
               <SidebarLink
+                isMobile={isMobile}
                 icon={AlertCircle}
                 label="Urgent"
                 href="/priority/urgent"
               />
               <SidebarLink
+                isMobile={isMobile}
                 icon={ShieldAlert}
                 label="High"
                 href="/priority/high"
               />
               <SidebarLink
+                isMobile={isMobile}
                 icon={AlertTriangle}
                 label="Medium"
                 href="/priority/medium"
               />
               <SidebarLink
+                isMobile={isMobile}
                 icon={AlertOctagon}
                 label="Low"
                 href="/priority/low"
               />
               <SidebarLink
+                isMobile={isMobile}
                 icon={Layers3}
                 label="Backlog"
                 href="/priority/backlog"
@@ -204,9 +257,15 @@ interface SidebarLinkProps {
   href: string;
   icon: LucideIcon;
   label: string;
+  isMobile: boolean;
 }
 
-const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
+const SidebarLink = ({
+  href,
+  icon: Icon,
+  label,
+  isMobile,
+}: SidebarLinkProps) => {
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed,
@@ -219,7 +278,9 @@ const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
     <Link
       href={href}
       className="w-full"
-      onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
+      onClick={() =>
+        isMobile ? dispatch(setIsSidebarCollapsed(!isSidebarCollapsed)) : null
+      }
     >
       <div
         className={`relative flex cursor-pointer items-center gap-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""} justify-start px-8 py-3`}
